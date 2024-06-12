@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "voice-conversion",
+    "slug": "voice-conversion",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["assets/fonts/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      ["./withAndroidSplashScreen.js"]
+    ],
+    "androidStatusBar": {
+      "backgroundColor": "#00000000",
+      "barStyle": "dark-content"
+    }
+  }
+}
