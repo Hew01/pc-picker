@@ -6,6 +6,7 @@ import DetailsScreen from './src/screens/DetailsScreen';
 import PaymentScreen from './src/screens/PaymentScreen';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
+import UserSettingsNavigator from 'navigators/UserSettingNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +52,11 @@ const App = () => {
         <Stack.Screen
           name="Payment"
           component={PaymentScreen}
+          options={{animation: 'slide_from_bottom'}}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={UserSettingsNavigator}
           options={{animation: 'slide_from_bottom'}}
         />
       </Stack.Navigator>

@@ -19,7 +19,7 @@ import {
 import CustomIcon from './CustomIcon';
 import BGIcon from './BGIcon';
 
-const CARD_WIDTH = Dimensions.get('window').width * 0.32;
+const CARD_WIDTH = Dimensions.get('window').width * 0.46;
 
 interface CoffeeCardProps {
   id: string;

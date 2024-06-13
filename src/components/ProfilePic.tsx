@@ -1,15 +1,26 @@
 import React from 'react';
-import {StyleSheet, Image, View} from 'react-native';
+import {StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {COLORS, SPACING} from '../theme/theme';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
+// Define a type for your navigation prop
+type RootStackParamList = {
+  Settings: undefined;
+  // Add other screens here
+};
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 const ProfilePic = () => {
+  const navigation = useNavigation<NavigationProp>();
   return (
-    <View style={styles.ImageContainer}>
+    <TouchableOpacity style={styles.ImageContainer}
+      onPress={() => navigation.navigate('Settings')}>
       <Image
         source={require('../assets/app_images/avatar.png')}
         style={styles.Image}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 

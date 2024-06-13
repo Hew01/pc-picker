@@ -301,11 +301,25 @@ const HomeScreen = ({navigation}: any) => {
           }}
         />
       </ScrollView>
+      <TouchableOpacity style={styles.messageButton} onPress={() => { /* Handle button press */ }}>
+        <Text style={styles.buttonText}>Message</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  messageButton: {
+    position: 'absolute', // Position the button absolutely
+    right: 20, // 10 pixels from the right edge of the screen
+    bottom: 100, // 10 pixels from the bottom edge of the screen
+    backgroundColor: COLORS.primaryOrangeHex, // Button color
+    padding: 10, // Padding inside the button
+    borderRadius: 20, // Rounded corners
+  },
+  buttonText: {
+    color: '#FFFFFF', // Text color
+  },
   ScreenContainer: {
     flex: 1,
     backgroundColor: COLORS.primaryBlackHex,
