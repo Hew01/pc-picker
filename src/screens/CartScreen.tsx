@@ -60,9 +60,7 @@ const CartScreen = ({navigation, route}: any) => {
                   <TouchableOpacity
                     onPress={() => {
                       navigation.push('Details', {
-                        index: data.index,
                         id: data.id,
-                        type: data.type,
                       });
                     }}
                     key={data.id}>
@@ -91,7 +89,7 @@ const CartScreen = ({navigation, route}: any) => {
             <PaymentFooter
               buttonPressHandler={buttonPressHandler}
               buttonTitle="Pay"
-              price={{price: CartPrice, currency: '$'}}
+              price={CartPrice}
             />
           ) : (
             <></>

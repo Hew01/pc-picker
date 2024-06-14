@@ -16,6 +16,7 @@ export interface Product {
   images: string[];
   quantity: number;
   price: number;
+  favourite: boolean;
   buttonPressHandler: any;
 }
 

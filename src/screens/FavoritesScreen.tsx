@@ -45,8 +45,7 @@ const FavoritesScreen = ({navigation}: any) => {
                   <TouchableOpacity
                     onPress={() => {
                       navigation.push('Details', {
-                        index: data.index,
-                        id: data.id,
+                        id: data._id,
                       });
                     }}
                     key={data.id}>

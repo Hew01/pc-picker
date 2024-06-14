@@ -18,25 +18,28 @@ import {
 import CustomIcon from './CustomIcon';
 
 interface CartItemProps {
-  id: string;
-  name: string;
-  imagelink_square: ImageProps;
-  special_ingredient: string;
-  roasted: string;
-  prices: any;
-  type: string;
+  _id: string;
+  productName: string;
+  brand: string;
+  descriptions: string;
+  detailed_info: string;
+  category: string;
+  instockStatus: boolean;
+  description: string;
+  images: string[];
+  quantity: number;
+  price: number;
   incrementCartItemQuantityHandler: any;
   decrementCartItemQuantityHandler: any;
 }
 
 const CartItem: React.FC<CartItemProps> = ({
-  id,
-  name,
-  imagelink_square,
-  special_ingredient,
-  roasted,
-  prices,
-  type,
+  _id,
+  productName,
+  brand,
+  category,
+  description,
+  images,
   incrementCartItemQuantityHandler,
   decrementCartItemQuantityHandler,
 }) => {
@@ -49,16 +52,16 @@ const CartItem: React.FC<CartItemProps> = ({
           colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
           style={styles.CartItemLinearGradient}>
           <View style={styles.CartItemRow}>
-            <Image source={imagelink_square} style={styles.CartItemImage} />
+            <Image source={{uri: images[0]}} style={styles.CartItemImage} />
             <View style={styles.CartItemInfo}>
               <View>
-                <Text style={styles.CartItemTitle}>{name}</Text>
+                <Text style={styles.CartItemTitle}>{productName}</Text>
                 <Text style={styles.CartItemSubtitle}>
-                  {special_ingredient}
+                  {category}
                 </Text>
               </View>
               <View style={styles.CartItemRoastedContainer}>
-                <Text style={styles.CartItemRoastedText}>{roasted}</Text>
+                <Text style={styles.CartItemRoastedText}>{brand}</Text>
               </View>
             </View>
           </View>

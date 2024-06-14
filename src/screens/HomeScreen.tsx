@@ -259,6 +259,7 @@ const HomeScreen = ({navigation}: any) => {
                 images={item.images}
                 quantity={item.quantity}
                 price={item.price}
+                favourite={item.favourite}
                 buttonPressHandler={ProductCardAddToCart}
               />
             </TouchableOpacity>
