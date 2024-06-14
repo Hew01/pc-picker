@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { produce } from 'immer';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import apiFetch from 'utils/apiConfig';
 
 export interface Product {
   _id: string;
@@ -30,13 +31,15 @@ export const useStore = create(
       // Fetch products from API
       fetchProducts: async (apiEndpoint: string) => {
         try {
-          const response = await fetch(apiEndpoint);
-          const products: Product[] = await response.json();
+          const response = await apiFetch(apiEndpoint, '');
+          console.log('fetchProducts response:', response);
+          const products: Product[] = response;
           set({ productList: products });
         } catch (error) {
           console.error('Failed to fetch products:', error);
         }
       },
+      
 
       // Add to cart
       addToCart: (product: Product) =>

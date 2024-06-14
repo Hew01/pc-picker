@@ -9,51 +9,46 @@ import {
   FONTSIZE,
   SPACING,
 } from '../theme/theme';
-
-interface FavoritesItemCardProps {
-  id: string;
-  imagelink_portrait: ImageProps;
-  name: string;
-  special_ingredient: string;
-  type: string;
-  ingredients: string;
-  average_rating: number;
-  ratings_count: string;
-  roasted: string;
+import { Product } from 'store/store';
+export interface FavoriteItemsCard {
+  _id: string;
+  productName: string;
+  brand: string;
+  descriptions: string;
+  detailed_info: string;
+  category: string;
+  instockStatus: boolean;
   description: string;
+  images: string[];
+  quantity: number;
+  price: number;
+  BackHandler: any;
   favourite: boolean;
-  ToggleFavouriteItem: any;
+  ToggleFavourite: any;
 }
-
-const FavoritesItemCard: React.FC<FavoritesItemCardProps> = ({
-  id,
-  imagelink_portrait,
-  name,
-  special_ingredient,
-  type,
-  ingredients,
-  average_rating,
-  ratings_count,
-  roasted,
+const FavoritesItemCard: React.FC<FavoriteItemsCard> = ({
+  _id,
+  productName,
+  brand,
+  category,
   description,
+  images,
   favourite,
-  ToggleFavouriteItem,
+  BackHandler,
+  ToggleFavourite,
 }) => {
   return (
     <View style={styles.CardContainer}>
       <ImageBackgroundInfo
         EnableBackHandler={false}
-        imagelink_portrait={imagelink_portrait}
-        type={type}
-        id={id}
-        favourite={favourite}
-        name={name}
-        special_ingredient={special_ingredient}
-        ingredients={ingredients}
-        average_rating={average_rating}
-        ratings_count={ratings_count}
-        roasted={roasted}
-        ToggleFavourite={ToggleFavouriteItem}
+        imagelink_portrait={ images[0] }
+          id={_id}
+          favourite={favourite}
+          name={productName}
+          category={category}
+          brandName={brand}
+          BackHandler={BackHandler}
+          ToggleFavourite={ToggleFavourite}
       />
       <LinearGradient
         start={{x: 0, y: 0}}

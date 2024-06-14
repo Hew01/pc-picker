@@ -6,6 +6,7 @@ import {
   StatusBar,
   ScrollView,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native';
 import {useStore} from '../store/store';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
@@ -15,14 +16,14 @@ import EmptyListAnimation from '../components/EmptyListAnimation';
 import FavoritesItemCard from '../components/FavoritesItemCard';
 
 const FavoritesScreen = ({navigation}: any) => {
-  const FavoritesList = useStore((state: any) => state.FavoritesList);
+  const favoritesList = useStore((state: any) => state.favoritesList);
   const tabBarHeight = useBottomTabBarHeight();
   const addToFavoriteList = useStore((state: any) => state.addToFavoriteList);
   const deleteFromFavoriteList = useStore(
     (state: any) => state.deleteFromFavoriteList,
   );
-  const ToggleFavourite = (favourite: boolean, type: string, id: string) => {
-    favourite ? deleteFromFavoriteList(type, id) : addToFavoriteList(type, id);
+  const ToggleFavourite = (favourite: boolean) => {
+    favourite ? deleteFromFavoriteList(favoritesList) : addToFavoriteList(favoritesList);
   };
   return (
     <View style={styles.ScreenContainer}>
@@ -36,33 +37,34 @@ const FavoritesScreen = ({navigation}: any) => {
           <View style={styles.ItemContainer}>
             <HeaderBar title="Favourites" />
 
-            {FavoritesList.length == 0 ? (
+            {favoritesList.length == 0 ? (
               <EmptyListAnimation title={'No Favourites'} />
             ) : (
               <View style={styles.ListItemContainer}>
-                {FavoritesList.map((data: any) => (
+                {favoritesList.map((data: any) => (
                   <TouchableOpacity
                     onPress={() => {
                       navigation.push('Details', {
                         index: data.index,
                         id: data.id,
-                        type: data.type,
                       });
                     }}
                     key={data.id}>
                     <FavoritesItemCard
-                      id={data.id}
-                      imagelink_portrait={data.imagelink_portrait}
-                      name={data.name}
-                      special_ingredient={data.special_ingredient}
-                      type={data.type}
-                      ingredients={data.ingredients}
-                      average_rating={data.average_rating}
-                      ratings_count={data.ratings_count}
-                      roasted={data.roasted}
+                      _id={data._id}
+                      productName={data.productName}
+                      brand={data.brand}
+                      descriptions={data.descriptions}
+                      detailed_info={data.detailed_info}
+                      category={data.category}
+                      instockStatus={data.instockStatus}
                       description={data.description}
+                      images={data.images}
+                      quantity={data.quantity}
+                      price={data.price}
                       favourite={data.favourite}
-                      ToggleFavouriteItem={ToggleFavourite}
+                      BackHandler={BackHandler}
+                      ToggleFavourite={ToggleFavourite}
                     />
                   </TouchableOpacity>
                 ))}

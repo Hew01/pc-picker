@@ -38,7 +38,7 @@ const getCategoriesFromData = (data: any) => {
   return categories;
 };
 
-const getproductList = (category: string, data: any) => {
+const getProductList = (category: string, data: any) => {
   if (category == 'All') {
     return data;
   } else {
@@ -59,7 +59,7 @@ const HomeScreen = ({navigation}: any) => {
   const [sortedProducts, setSortedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetchProducts('http://127.0.0.1:5000/products/all');
+    fetchProducts('products/all');
   }, []);
 
   useEffect(() => {
@@ -245,7 +245,6 @@ const HomeScreen = ({navigation}: any) => {
               onPress={() => {
                 navigation.push('Details', {
                   id: item._id,
-                  type: item.type,
                 });
               }}>
               <CoffeeCard
@@ -289,6 +288,7 @@ const styles = StyleSheet.create({
   ScreenContainer: {
     flex: 1,
     backgroundColor: COLORS.primaryBlackHex,
+    paddingBottom: 80
   },
   ScrollViewFlex: {
     flexGrow: 1,
@@ -317,6 +317,7 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhiteHex,
   },
   CategoryScrollViewStyle: {
+    gap: SPACING.space_20,
     paddingHorizontal: SPACING.space_20,
     marginBottom: SPACING.space_20,
   },

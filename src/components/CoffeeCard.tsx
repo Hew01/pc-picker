@@ -47,7 +47,7 @@ const CoffeeCard: React.FC<Product> = ({
         style={styles.CardImageBG}
         resizeMode="cover">
       </ImageBackground>
-      <Text style={styles.CardTitle}>{productName}</Text>
+      <Text style={[styles.CardTitle, { flexShrink: 1, width: CARD_WIDTH }]}>{productName}</Text>
       <Text style={styles.CardSubtitle}>{brand}</Text>
       <View style={styles.CardFooterRow}>
         <Text style={styles.CardPriceCurrency}>
@@ -116,6 +116,8 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_medium,
     color: COLORS.primaryWhiteHex,
     fontSize: FONTSIZE.size_16,
+    flexShrink: 1,
+    width: CARD_WIDTH
   },
   CardSubtitle: {
     fontFamily: FONTFAMILY.poppins_light,
