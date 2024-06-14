@@ -18,31 +18,21 @@ import {
 } from '../theme/theme';
 import CustomIcon from './CustomIcon';
 import BGIcon from './BGIcon';
+import { Product } from 'store/store';
 
 const CARD_WIDTH = Dimensions.get('window').width * 0.46;
 
-interface CoffeeCardProps {
-  id: string;
-  index: number;
-  type: string;
-  roasted: string;
-  imagelink_square: ImageProps;
-  name: string;
-  special_ingredient: string;
-  average_rating: number;
-  price: any;
-  buttonPressHandler: any;
-}
-
-const CoffeeCard: React.FC<CoffeeCardProps> = ({
-  id,
-  index,
-  type,
-  roasted,
-  imagelink_square,
-  name,
-  special_ingredient,
-  average_rating,
+const CoffeeCard: React.FC<Product> = ({
+  _id,
+  productName,
+  brand,
+  descriptions,
+  detailed_info,
+  category,
+  instockStatus,
+  description,
+  images,
+  quantity,
   price,
   buttonPressHandler,
 }) => {
@@ -53,35 +43,30 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
       style={styles.CardLinearGradientContainer}
       colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}>
       <ImageBackground
-        source={imagelink_square}
+        source={{ uri: images[0] }}
         style={styles.CardImageBG}
         resizeMode="cover">
-        <View style={styles.CardRatingContainer}>
-          <CustomIcon
-            name={'star'}
-            color={COLORS.primaryOrangeHex}
-            size={FONTSIZE.size_16}
-          />
-          <Text style={styles.CardRatingText}>{average_rating}</Text>
-        </View>
       </ImageBackground>
-      <Text style={styles.CardTitle}>{name}</Text>
-      <Text style={styles.CardSubtitle}>{special_ingredient}</Text>
+      <Text style={styles.CardTitle}>{productName}</Text>
+      <Text style={styles.CardSubtitle}>{brand}</Text>
       <View style={styles.CardFooterRow}>
         <Text style={styles.CardPriceCurrency}>
-          $ <Text style={styles.CardPrice}>{price.price}</Text>
+          $ <Text style={styles.CardPrice}>{price}</Text>
         </Text>
         <TouchableOpacity
           onPress={() => {
             buttonPressHandler({
-              id,
-              index,
-              type,
-              roasted,
-              imagelink_square,
-              name,
-              special_ingredient,
-              prices: [{...price, quantity: 1}],
+              _id,
+              productName,
+              brand,
+              descriptions,
+              detailed_info,
+              category,
+              instockStatus,
+              description,
+              images,
+              quantity,
+              price,
             });
           }}>
           <BGIcon

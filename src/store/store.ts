@@ -1,215 +1,112 @@
-import {create} from 'zustand';
-import {produce} from 'immer';
-import {persist, createJSONStorage} from 'zustand/middleware';
+import { create } from 'zustand';
+import { produce } from 'immer';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CoffeeData from '../data/CoffeeData';
-import BeansData from '../data/BeansData';
+
+export interface Product {
+  _id: string;
+  productName: string;
+  brand: string;
+  descriptions: string;
+  detailed_info: string;
+  category: string;
+  instockStatus: boolean;
+  description: string;
+  images: string[];
+  quantity: number;
+  price: number;
+  buttonPressHandler: any;
+}
 
 export const useStore = create(
   persist(
     (set, get) => ({
-      CoffeeList: CoffeeData,
-      BeanList: BeansData,
-      CartPrice: 0,
-      FavoritesList: [],
-      CartList: [],
-      OrderHistoryList: [],
-      addToCart: (cartItem: any) =>
+      productList: [] as Product[],
+      cartList: [] as Product[],
+      favoritesList: [] as Product[],
+      orderHistoryList: [] as Product[],
+      totalCartPrice: 0,
+
+      // Fetch products from API
+      fetchProducts: async (apiEndpoint: string) => {
+        try {
+          const response = await fetch(apiEndpoint);
+          const products: Product[] = await response.json();
+          set({ productList: products });
+        } catch (error) {
+          console.error('Failed to fetch products:', error);
+        }
+      },
+
+      // Add to cart
+      addToCart: (product: Product) =>
         set(
-          produce(state => {
-            let found = false;
-            for (let i = 0; i < state.CartList.length; i++) {
-              if (state.CartList[i].id == cartItem.id) {
-                found = true;
-                let size = false;
-                for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                  if (
-                    state.CartList[i].prices[j].size == cartItem.prices[0].size
-                  ) {
-                    size = true;
-                    state.CartList[i].prices[j].quantity++;
-                    break;
-                  }
-                }
-                if (size == false) {
-                  state.CartList[i].prices.push(cartItem.prices[0]);
-                }
-                state.CartList[i].prices.sort((a: any, b: any) => {
-                  if (a.size > b.size) {
-                    return -1;
-                  }
-                  if (a.size < b.size) {
-                    return 1;
-                  }
-                  return 0;
-                });
-                break;
-              }
+          produce((state) => {
+            const existingProduct = state.cartList.find((p: { _id: string; }) => p._id === product._id);
+            if (existingProduct) {
+              existingProduct.quantity++;
+            } else {
+              state.cartList.push({ ...product, quantity: 1 });
             }
-            if (found == false) {
-              state.CartList.push(cartItem);
+            state.totalCartPrice += product.price;
+          }),
+        ),
+
+      // Add to favorites
+      addToFavoriteList: (product: Product) =>
+        set(
+          produce((state) => {
+            const existingProduct = state.favoritesList.find((p: { _id: string; }) => p._id === product._id);
+            if (!existingProduct) {
+              state.favoritesList.push(product);
             }
           }),
         ),
-      calculateCartPrice: () =>
+
+      // Remove from favorites
+      deleteFromFavoriteList: (product: Product) =>
         set(
-          produce(state => {
-            let totalprice = 0;
-            for (let i = 0; i < state.CartList.length; i++) {
-              let tempprice = 0;
-              for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                tempprice =
-                  tempprice +
-                  parseFloat(state.CartList[i].prices[j].price) *
-                    state.CartList[i].prices[j].quantity;
-              }
-              state.CartList[i].ItemPrice = tempprice.toFixed(2).toString();
-              totalprice = totalprice + tempprice;
-            }
-            state.CartPrice = totalprice.toFixed(2).toString();
-          }),
-        ),
-      addToFavoriteList: (type: string, id: string) =>
-        set(
-          produce(state => {
-            if (type == 'Coffee') {
-              for (let i = 0; i < state.CoffeeList.length; i++) {
-                if (state.CoffeeList[i].id == id) {
-                  if (state.CoffeeList[i].favourite == false) {
-                    state.CoffeeList[i].favourite = true;
-                    state.FavoritesList.unshift(state.CoffeeList[i]);
-                  } else {
-                    state.CoffeeList[i].favourite = false;
-                  }
-                  break;
-                }
-              }
-            } else if (type == 'Bean') {
-              for (let i = 0; i < state.BeanList.length; i++) {
-                if (state.BeanList[i].id == id) {
-                  if (state.BeanList[i].favourite == false) {
-                    state.BeanList[i].favourite = true;
-                    state.FavoritesList.unshift(state.BeanList[i]);
-                  } else {
-                    state.BeanList[i].favourite = false;
-                  }
-                  break;
-                }
-              }
+          produce((state) => {
+            const index = state.favoritesList.findIndex((p: { _id: string; }) => p._id === product._id);
+            if (index !== -1) {
+              state.favoritesList.splice(index, 1);
             }
           }),
         ),
-      deleteFromFavoriteList: (type: string, id: string) =>
+
+      // Increment cart item quantity
+      incrementCartItemQuantity: (id: string) =>
         set(
-          produce(state => {
-            if (type == 'Coffee') {
-              for (let i = 0; i < state.CoffeeList.length; i++) {
-                if (state.CoffeeList[i].id == id) {
-                  if (state.CoffeeList[i].favourite == true) {
-                    state.CoffeeList[i].favourite = false;
-                  } else {
-                    state.CoffeeList[i].favourite = true;
-                  }
-                  break;
-                }
-              }
-            } else if (type == 'Beans') {
-              for (let i = 0; i < state.BeanList.length; i++) {
-                if (state.BeanList[i].id == id) {
-                  if (state.BeanList[i].favourite == true) {
-                    state.BeanList[i].favourite = false;
-                  } else {
-                    state.BeanList[i].favourite = true;
-                  }
-                  break;
-                }
-              }
-            }
-            let spliceIndex = -1;
-            for (let i = 0; i < state.FavoritesList.length; i++) {
-              if (state.FavoritesList[i].id == id) {
-                spliceIndex = i;
-                break;
-              }
-            }
-            state.FavoritesList.splice(spliceIndex, 1);
-          }),
-        ),
-      incrementCartItemQuantity: (id: string, size: string) =>
-        set(
-          produce(state => {
-            for (let i = 0; i < state.CartList.length; i++) {
-              if (state.CartList[i].id == id) {
-                for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                  if (state.CartList[i].prices[j].size == size) {
-                    state.CartList[i].prices[j].quantity++;
-                    break;
-                  }
-                }
-              }
+          produce((state) => {
+            const product = state.cartList.find((p: { _id: string; }) => p._id === id);
+            if (product) {
+              product.quantity++;
             }
           }),
         ),
-      decrementCartItemQuantity: (id: string, size: string) =>
+
+      // Decrement cart item quantity
+      decrementCartItemQuantity: (id: string) =>
         set(
-          produce(state => {
-            for (let i = 0; i < state.CartList.length; i++) {
-              if (state.CartList[i].id == id) {
-                for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                  if (state.CartList[i].prices[j].size == size) {
-                    if (state.CartList[i].prices.length > 1) {
-                      if (state.CartList[i].prices[j].quantity > 1) {
-                        state.CartList[i].prices[j].quantity--;
-                      } else {
-                        state.CartList[i].prices.splice(j, 1);
-                      }
-                    } else {
-                      if (state.CartList[i].prices[j].quantity > 1) {
-                        state.CartList[i].prices[j].quantity--;
-                      } else {
-                        state.CartList.splice(i, 1);
-                      }
-                    }
-                    break;
-                  }
-                }
-              }
+          produce((state) => {
+            const product = state.cartList.find((p: { _id: string; }) => p._id === id);
+            if (product && product.quantity > 1) {
+              product.quantity--;
             }
           }),
         ),
+
+      // Add to order history
       addToOrderHistoryListFromCart: () =>
         set(
-          produce(state => {
-            let temp = state.CartList.reduce(
-              (accumulator: number, currentValue: any) =>
-                accumulator + parseFloat(currentValue.ItemPrice),
-              0,
-            );
-            if (state.OrderHistoryList.length > 0) {
-              state.OrderHistoryList.unshift({
-                OrderDate:
-                  new Date().toDateString() +
-                  ' ' +
-                  new Date().toLocaleTimeString(),
-                CartList: state.CartList,
-                CartListPrice: temp.toFixed(2).toString(),
-              });
-            } else {
-              state.OrderHistoryList.push({
-                OrderDate:
-                  new Date().toDateString() +
-                  ' ' +
-                  new Date().toLocaleTimeString(),
-                CartList: state.CartList,
-                CartListPrice: temp.toFixed(2).toString(),
-              });
-            }
-            state.CartList = [];
+          produce((state) => {
+            state.orderHistoryList.push(...state.cartList);
+            state.cartList = [];
           }),
         ),
     }),
     {
-      name: 'coffee-app',
+      name: 'product-app',
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),
