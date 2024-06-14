@@ -10,20 +10,20 @@ import {
 } from '../theme/theme';
 
 interface OrderItemCardProps {
-  type: string;
   name: string;
-  imagelink_square: ImageProps;
-  special_ingredient: string;
-  prices: any;
+  images: string;
+  category: string;
+  price: number;
+  quantity: number;
   ItemPrice: string;
 }
 
 const OrderItemCard: React.FC<OrderItemCardProps> = ({
-  type,
   name,
-  imagelink_square,
-  special_ingredient,
-  prices,
+  category,
+  images,
+  price,
+  quantity,
   ItemPrice,
 }) => {
   return (
@@ -34,10 +34,10 @@ const OrderItemCard: React.FC<OrderItemCardProps> = ({
       style={styles.CardLinearGradient}>
       <View style={styles.CardInfoContainer}>
         <View style={styles.CardImageInfoContainer}>
-          <Image source={imagelink_square} style={styles.Image} />
+          <Image source={{uri: images[0]}} style={styles.Image} />
           <View>
             <Text style={styles.CardTitle}>{name}</Text>
-            <Text style={styles.CardSubtitle}>{special_ingredient}</Text>
+            <Text style={styles.CardSubtitle}>{category}</Text>
           </View>
         </View>
         <View>
@@ -46,39 +46,25 @@ const OrderItemCard: React.FC<OrderItemCardProps> = ({
           </Text>
         </View>
       </View>
-      {prices.map((data: any, index: any) => (
-        <View key={index.toString()} style={styles.CardTableRow}>
+        <View style={styles.CardTableRow}>
           <View style={styles.CardTableRow}>
-            <View style={styles.SizeBoxLeft}>
-              <Text
-                style={[
-                  styles.SizeText,
-                  {
-                    fontSize:
-                      type == 'Bean' ? FONTSIZE.size_12 : FONTSIZE.size_16,
-                  },
-                ]}>
-                {data.size}
-              </Text>
-            </View>
             <View style={styles.PriceBoxRight}>
               <Text style={styles.PriceCurrency}>
-                {data.currency}
-                <Text style={styles.Price}> {data.price}</Text>
+                $
+                <Text style={styles.Price}> {price}</Text>
               </Text>
             </View>
           </View>
 
           <View style={styles.CardTableRow}>
             <Text style={styles.CardQuantityPriceText}>
-              X <Text style={styles.Price}>{data.quantity}</Text>
+              X <Text style={styles.Price}>{quantity}</Text>
             </Text>
             <Text style={styles.CardQuantityPriceText}>
-              $ {(data.quantity * data.price).toFixed(2).toString()}
+              $ {(quantity * price).toFixed(2).toString()}
             </Text>
           </View>
         </View>
-      ))}
     </LinearGradient>
   );
 };

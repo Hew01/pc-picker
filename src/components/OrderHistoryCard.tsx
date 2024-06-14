@@ -44,11 +44,11 @@ const OrderHistoryCard: React.FC<OrderHistoryCardProps> = ({
               });
             }}>
             <OrderItemCard
-              type={data.type}
               name={data.name}
-              imagelink_square={data.imagelink_square}
-              special_ingredient={data.special_ingredient}
-              prices={data.prices}
+              images={data.images}
+              category={data.category}
+              price={data.price}
+              quantity={data.quantity}
               ItemPrice={data.ItemPrice}
             />
           </TouchableOpacity>

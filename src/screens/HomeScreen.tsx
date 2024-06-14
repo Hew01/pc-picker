@@ -143,7 +143,7 @@ const HomeScreen = ({navigation}: any) => {
         <HeaderBar />
 
         <Text style={styles.ScreenTitle}>
-          Find the best{'\n'}coffee for you
+          Find the best{'\n'}PC parts for you
         </Text>
 
         {/* Search Input */}

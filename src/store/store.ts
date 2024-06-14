@@ -27,7 +27,7 @@ export const useStore = create(
       productList: [] as Product[],
       cartList: [] as Product[],
       favoritesList: [] as Product[],
-      orderHistoryList: [] as Product[],
+      orderHistoryList: [],
       totalCartPrice: 0,
 
       // Fetch products from API
@@ -116,8 +116,31 @@ export const useStore = create(
       // Add to order history
       addToOrderHistoryListFromCart: () =>
         set(
-          produce((state) => {
-            state.orderHistoryList.push(...state.cartList);
+          produce(state => {
+            let temp = state.cartList.reduce(
+              (accumulator: number, currentValue: any) =>
+                accumulator + parseFloat(currentValue.ItemPrice),
+              0,
+            );
+            if (state.orderHistoryList.length > 0) {
+              state.orderHistoryList.unshift({
+                OrderDate:
+                  new Date().toDateString() +
+                  ' ' +
+                  new Date().toLocaleTimeString(),
+                cartList: state.cartList,
+                totalCartPrice: temp.toFixed(2).toString(),
+              });
+            } else {
+              state.orderHistoryList.push({
+                OrderDate:
+                  new Date().toDateString() +
+                  ' ' +
+                  new Date().toLocaleTimeString(),
+                cartList: state.cartList,
+                totalCartPrice: temp.toFixed(2).toString(),
+              });
+            }
             state.cartList = [];
           }),
         ),
