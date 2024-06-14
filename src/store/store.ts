@@ -17,6 +17,7 @@ export interface Product {
   quantity: number;
   price: number;
   favourite: boolean;
+  ItemPrice?: any;
   buttonPressHandler: any;
 }
 
@@ -41,7 +42,19 @@ export const useStore = create(
         }
       },
       
-
+      calculateCartPrice: () =>
+        set(
+          produce(state => {
+            let totalprice = 0;
+            for (let i = 0; i < state.cartList.length; i++) {
+              let tempprice = state.cartList[i].price * state.cartList[i].quantity;
+              state.cartList[i].ItemPrice = tempprice.toFixed(2).toString();
+              totalprice = totalprice + tempprice;
+            }
+            state.totalCartPrice = totalprice.toFixed(2).toString();
+          }),
+        ),
+      
       // Add to cart
       addToCart: (product: Product) =>
         set(

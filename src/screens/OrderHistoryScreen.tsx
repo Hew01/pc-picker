@@ -22,16 +22,12 @@ import PopUpAnimation from '../components/PopUpAnimation';
 import OrderHistoryCard from '../components/OrderHistoryCard';
 
 const OrderHistoryScreen = ({navigation}: any) => {
-  const OrderHistoryList = useStore((state: any) => state.OrderHistoryList);
+  const orderHistoryList = useStore((state: any) => state.orderHistoryList);
   const tabBarHeight = useBottomTabBarHeight();
   const [showAnimation, setShowAnimation] = useState(false);
 
-  const navigationHandler = ({index, id, type}: any) => {
-    navigation.push('Details', {
-      index,
-      id,
-      type,
-    });
+  const navigationHandler = ({id}: any) => {
+    navigation.push('Details', id);
   };
 
   const buttonPressHandler = () => {
@@ -61,12 +57,11 @@ const OrderHistoryScreen = ({navigation}: any) => {
           style={[styles.ScrollViewInnerView, {marginBottom: tabBarHeight}]}>
           <View style={styles.ItemContainer}>
             <HeaderBar title="Order History" />
-
-            {OrderHistoryList.length == 0 ? (
+            {orderHistoryList.length == 0 ? (
               <EmptyListAnimation title={'No Order History'} />
             ) : (
               <View style={styles.ListItemContainer}>
-                {OrderHistoryList.map((data: any, index: any) => (
+                {orderHistoryList.map((data: any, index: any) => (
                   <OrderHistoryCard
                     key={index.toString()}
                     navigationHandler={navigationHandler}
@@ -78,7 +73,7 @@ const OrderHistoryScreen = ({navigation}: any) => {
               </View>
             )}
           </View>
-          {OrderHistoryList.length > 0 ? (
+          {orderHistoryList.length > 0 ? (
             <TouchableOpacity
               style={styles.DownloadButton}
               onPress={() => {

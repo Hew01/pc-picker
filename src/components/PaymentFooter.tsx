@@ -49,12 +49,12 @@ const styles = StyleSheet.create({
   },
   PriceTitle: {
     fontFamily: FONTFAMILY.poppins_medium,
-    fontSize: FONTSIZE.size_14,
+    fontSize: FONTSIZE.size_10,
     color: COLORS.secondaryLightGreyHex,
   },
   PriceText: {
     fontFamily: FONTFAMILY.poppins_semibold,
-    fontSize: FONTSIZE.size_24,
+    fontSize: FONTSIZE.size_16,
     color: COLORS.primaryOrangeHex,
   },
   Price: {

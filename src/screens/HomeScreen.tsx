@@ -111,21 +111,19 @@ const HomeScreen = ({navigation}: any) => {
     id,
     index,
     name,
-    roasted,
-    imagelink_square,
-    special_ingredient,
-    type,
-    prices,
+    brand,
+    images,
+    category,
+    price,
   }: any) => {
     addToCart({
       id,
       index,
       name,
-      roasted,
-      imagelink_square,
-      special_ingredient,
-      type,
-      prices,
+      brand,
+      images,
+      category,
+      price,
     });
     calculateCartPrice();
     ToastAndroid.showWithGravity(

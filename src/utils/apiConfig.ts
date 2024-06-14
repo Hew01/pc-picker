@@ -1,7 +1,6 @@
-import Constants from "expo-constants";
 import axios from 'axios';
 
-const baseURL = `https://2fd3-2405-4802-9421-b12a-c4f8-4128-e0a1-9ac.ngrok-free.app/`;
+const baseURL = `https://82f1-2405-4802-9421-b12a-c4f8-4128-e0a1-9ac.ngrok-free.app/`;
 
 const data = {
   "accountID": "665f382613e36f62bab16c0d",

@@ -16,8 +16,8 @@ import PaymentFooter from '../components/PaymentFooter';
 import CartItem from '../components/CartItem';
 
 const CartScreen = ({navigation, route}: any) => {
-  const CartList = useStore((state: any) => state.CartList);
-  const CartPrice = useStore((state: any) => state.CartPrice);
+  const cartList = useStore((state: any) => state.cartList);
+  const totalCartPrice = useStore((state: any) => state.totalCartPrice);
   const incrementCartItemQuantity = useStore(
     (state: any) => state.incrementCartItemQuantity,
   );
@@ -28,16 +28,16 @@ const CartScreen = ({navigation, route}: any) => {
   const tabBarHeight = useBottomTabBarHeight();
 
   const buttonPressHandler = () => {
-    navigation.push('Payment', {amount: CartPrice});
+    navigation.push('Payment', {amount: totalCartPrice});
   };
 
-  const incrementCartItemQuantityHandler = (id: string, size: string) => {
-    incrementCartItemQuantity(id, size);
+  const incrementCartItemQuantityHandler = (id: string) => {
+    incrementCartItemQuantity(id);
     calculateCartPrice();
   };
 
-  const decrementCartItemQuantityHandler = (id: string, size: string) => {
-    decrementCartItemQuantity(id, size);
+  const decrementCartItemQuantityHandler = (id: string) => {
+    decrementCartItemQuantity(id);
     calculateCartPrice();
   };
   return (
@@ -52,26 +52,25 @@ const CartScreen = ({navigation, route}: any) => {
           <View style={styles.ItemContainer}>
             <HeaderBar title="Cart" />
 
-            {CartList.length == 0 ? (
+            {cartList.length == 0 ? (
               <EmptyListAnimation title={'Cart is Empty'} />
             ) : (
               <View style={styles.ListItemContainer}>
-                {CartList.map((data: any) => (
+                {cartList.map((data: any) => (
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.push('Details', {
-                        id: data.id,
-                      });
+                      // navigation.push('Details', {
+                      //   id: data.id,
+                      // });
                     }}
-                    key={data.id}>
+                    key={data._id}>
                     <CartItem
-                      id={data.id}
-                      name={data.name}
-                      imagelink_square={data.imagelink_square}
-                      special_ingredient={data.special_ingredient}
-                      roasted={data.roasted}
-                      prices={data.prices}
-                      type={data.type}
+                      _id={data._id}
+                      productName={data.productName}
+                      images={data.images}
+                      category={data.category}
+                      quantity={data.quantity}
+                      price={data.price}
                       incrementCartItemQuantityHandler={
                         incrementCartItemQuantityHandler
                       }
@@ -85,11 +84,11 @@ const CartScreen = ({navigation, route}: any) => {
             )}
           </View>
 
-          {CartList.length != 0 ? (
+          {cartList.length != 0 ? (
             <PaymentFooter
               buttonPressHandler={buttonPressHandler}
               buttonTitle="Pay"
-              price={CartPrice}
+              price={totalCartPrice}
             />
           ) : (
             <></>
